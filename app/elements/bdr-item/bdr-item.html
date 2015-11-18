@@ -1,0 +1,112 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/byutv-jsonp/byutv-jsonp.html">
+
+<dom-module id="bdr-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div>
+      <h3>BDR item with PID = {{pid}} </h3>
+      <p>URL: {{url}}</p>
+      <byutv-jsonp
+         auto
+         debounce-duration="300"
+         url="[[url]]" 
+         on-error="reportError"
+         last-response={{itemdata}}
+         onResponse=setItemProps></byutv-jsonp>
+
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'bdr-item',
+
+      properties: {
+        api_base: {
+          type: String,
+          value: 'https://repository.library.brown.edu/api/items',
+          notify: true
+        },
+        pid: {
+          type: String,
+          value: '',
+          notify: true
+        },
+        itemdata: {
+          type: Object,
+	  value: function(){return {};},
+          notify: true
+        },
+        url: {
+          type: String,
+	  computed: '_item_url(api_base, pid)'
+        },
+	brief: {
+          type: Object,
+          computed: '_brief(itemdata)',
+          notify: true
+        },
+	parts: {
+          type: Object,
+          computed: '_parts(itemdata)',
+          notify: true
+        }
+
+      },
+setItemData: function(data){
+               console.log(data);
+             },
+      reportError: function(e){
+	console.log("Error retrieving item");
+      },
+      _parts: function(itemdata){
+                   if ('relations' in itemdata
+		      && 'hasPart' in itemdata.relations) {
+
+		     console.log(itemdata.relations.hasPart);
+                     return itemdata.relations.hasPart;
+                   } else {
+                     return [];
+                   }
+                 },
+      _brief: function(itemdata){
+                   if ('brief' in itemdata) {
+
+                     console.log(itemdata.brief);
+                     return itemdata.brief;
+                   } else {
+                     return {};
+                   }
+                 },
+      _item_url: function(api_base, pid) {
+                   return [api_base, pid].join('/');
+                 },
+      _toArray: function(obj) {
+                  return Object.keys(obj).map(function(key) {
+                      return {
+                        name: key,
+                        value: obj[key]
+                      };
+                  });
+               }
+      });
+  })();
+  </script>
+</dom-module>
