@@ -18,16 +18,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-    <div>
-      <h3>BDR item with PID = {{pid}} </h3>
-      <p>URL: {{url}}</p>
-      <byutv-jsonp
-         auto
-         debounce-duration="300"
-         url="[[url]]" 
-         on-error="reportError"
-         last-response={{itemdata}} ></byutv-jsonp>
-    </div>
+    <byutv-jsonp
+     auto
+     debounce-duration="300"
+     url="[[url]]" 
+     on-error="reportError"
+     last-response={{itemdata}} ></byutv-jsonp>
   </template>
   <script>
   (function() {
@@ -62,7 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         },
 	parts: {
-          type: Object,
+          type: Array,
           computed: '_parts(itemdata)',
           notify: true
         }
@@ -78,8 +74,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                  },
       _brief: function(itemdata){
                    if ('brief' in itemdata) {
-
-                     console.log(itemdata.brief);
                      return itemdata.brief;
                    } else {
                      return {};
@@ -87,14 +81,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                  },
       _itemUrl: function(baseUrl, pid) {
                    return [baseUrl, pid].join('/');
-                 },
-      _toArray: function(obj) {
-                  return Object.keys(obj).map(function(key) {
-                      return {
-                        name: key,
-                        value: obj[key]
-                      };
-                  });
                }
       });
   })();

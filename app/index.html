@@ -130,23 +130,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <h2 class="page-title">
                 Item:<span>{{params.pid}}</span>
                 </h2>
-                <div>This is <span>{{params.pid}}</span>'s section</div>
 	      <h3>Parts:</h3>
-                <sortable-js handle=".drag-handle" 
+                <button type="button" on-tap="listOrder">Print Order</button>
+                <sortable-js id="sorter"
+                             handle=".drag-handle" 
                              animation="150"
                              class="layout horizontal wrap">
                   <template is="dom-repeat" 
                             items$="[[itemparts]]">
-                    <paper-item data-id="[[item.pid]]">
-                    <paper-item-body two-line>
-                       <h4> [[item.pid]] -- [[item.display_type]] </h4>
-                       <bdr-thumbnail class="drag-handle"
-                                      pid=[[item.pid]]></bdr-thumbnail>
-                       <span>Previous Order :[[item.order]]</span>
-                    </paper-item-body></paper-item>
+                    <paper-item data-id$=[[item.pid]]>
+                      <paper-item-body two-line>
+                         <h4> [[item.pid]] -- [[item.display_type]] </h4>
+                         <bdr-thumbnail class="drag-handle"
+                                        pid=[[item.pid]]></bdr-thumbnail>
+                         <span>Previous Order :[[item.order]]</span>
+                      </paper-item-body></paper-item>
                   </template>
                 </sortable-js>
-              </ul>
 	      <h4>Result: </h4>
 	      <dl>
 		<template is="dom-repeat" 

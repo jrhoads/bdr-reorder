@@ -78,4 +78,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       };
     });
   };
+  app.listOrder = function(){
+    var order = this.$.sorter.sortable.toArray();
+    order.pop();
+    console.log(order);
+  };
 })(document);
