@@ -28,12 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'bdr-thumbnail',
 
       properties: {
-        foo: {
-          type: String,
-          value: 'bdr-thumbnail',
-          notify: true
-        },
-        thumbnail_base: {
+        baseUrl: {
           type: String,
           value: 'https://repository.library.brown.edu/viewers/image/thumbnail',
           notify: true
@@ -45,11 +40,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         url: {
           type: String,
-	  computed: '_thumbnail_url(thumbnail_base, pid)'
+	  computed: '_thumbnailUrl(baseUrl, pid)',
+	  notify: true
         }
       },
-      _thumbnail_url: function(api_base, pid) {
-                   return [api_base, pid].join('/');
+      _thumbnailUrl: function(baseUrl, pid) {
+                   return [baseUrl, pid].join('/');
                  },
     });
   })();

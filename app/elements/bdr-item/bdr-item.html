@@ -26,9 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          debounce-duration="300"
          url="[[url]]" 
          on-error="reportError"
-         last-response={{itemdata}}
-         onResponse=setItemProps></byutv-jsonp>
-
+         last-response={{itemdata}} ></byutv-jsonp>
     </div>
   </template>
   <script>
@@ -39,7 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'bdr-item',
 
       properties: {
-        api_base: {
+        baseUrl: {
           type: String,
           value: 'https://repository.library.brown.edu/api/items',
           notify: true
@@ -56,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         url: {
           type: String,
-	  computed: '_item_url(api_base, pid)'
+	  computed: '_itemUrl(baseUrl, pid)'
         },
 	brief: {
           type: Object,
@@ -70,17 +68,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
       },
-setItemData: function(data){
-               console.log(data);
-             },
-      reportError: function(e){
-	console.log("Error retrieving item");
-      },
       _parts: function(itemdata){
-                   if ('relations' in itemdata
-		      && 'hasPart' in itemdata.relations) {
-
-		     console.log(itemdata.relations.hasPart);
+                   if ('relations' in itemdata && 
+				   'hasPart' in itemdata.relations) {
                      return itemdata.relations.hasPart;
                    } else {
                      return [];
@@ -95,8 +85,8 @@ setItemData: function(data){
                      return {};
                    }
                  },
-      _item_url: function(api_base, pid) {
-                   return [api_base, pid].join('/');
+      _itemUrl: function(baseUrl, pid) {
+                   return [baseUrl, pid].join('/');
                  },
       _toArray: function(obj) {
                   return Object.keys(obj).map(function(key) {
